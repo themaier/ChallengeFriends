@@ -1,0 +1,20 @@
+html, body, #app, main {
+    height: 100%;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 56px);
+}
+
+.fullpage{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.router-link-active {
+    color: var(--bs-navbar-active-color)!important;
+}

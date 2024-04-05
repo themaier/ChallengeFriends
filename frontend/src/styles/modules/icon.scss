@@ -1,0 +1,56 @@
+.icon::before,
+.icon--after::after {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  mask-size: 100%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  background-color: currentColor;
+  vertical-align: baseline;
+  transform: translateY(0.2em);
+}
+
+.icon--button {
+    padding: 0!important;
+
+    &:active {
+        border:  none!important;
+    }
+}
+
+.icon::before {
+  margin-inline-end: 0.3em;
+}
+
+.icon--after::after {
+  margin-inline-start: 0.3em;
+}
+
+.icon--after::before {
+  content: none;
+}
+
+.icon:empty::before,
+.icon--after:empty::after {
+  margin-inline-end: 0;
+  margin-inline-start: 0;
+}
+
+.icon--size-1-5::before {
+  width: 1.5em;
+  height: 1.5em;
+  transform: translateY(.4em);
+}
+
+.icon--size-2::before {
+  width: 2em;
+  height: 2em;
+  transform: translateY(.6em);
+}
+
+.icon--color-brand::before,
+.icon--color-brand::after {
+  color: var(--color-brand);
+}

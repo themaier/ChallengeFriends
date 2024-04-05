@@ -1,0 +1,10 @@
+{
+    "python.formatting.provider": "autopep8",
+    "python.formatting.autopep8Args": [
+        "--max-line-length=120"
+    ],
+    "python.linting.pylintArgs": [
+        "--disable=C0111"
+    ],
+    "git.autofetch": true,
+}
