@@ -14,7 +14,7 @@ class LikeChallengeResponse(BaseModel):
 
 class Comment(BaseModel):
     id: Optional[int]
-    user_id: int
+    user_id: str
     challenge_id: int
     username: str
     text: Optional[str]
@@ -25,7 +25,7 @@ class Challenge(BaseModel):
     id: int
     publisher_name: str
     receiver_name: str
-    receiver_id: int
+    receiver_id: str
     title: str
     description: str
     prove_resource_path: str
@@ -37,14 +37,14 @@ class Challenge(BaseModel):
 
 
 class LikeChallengeRequest(BaseModel):
-    user_id: int
+    user_id: str
     challenge_id: int
 
 
 class ChallengeForm(BaseModel):
-    user_id: int
+    user_id: str
     challenge_name: str
-    friend_id: Optional[int] = Field(default=None)
+    friend_id: Optional[str] = Field(default=None)
     description: str
     hashtags_list: Optional[str]
     reward: Optional[str]
@@ -58,15 +58,16 @@ class ChallengeCompleted(BaseModel):
 
 
 class Friend(BaseModel):
-    user_id: int
+    user_id: str
     username: str
 
 
 class CreatedChallenges(BaseModel):
-    receiver_user_name: str
+    id: int
+    receiver_user_name: Optional[str]
     title: str
     description: str
     status: ChallengeStatus
     reward: Optional[str]
     hashtags: List[HashtagTable]
-    receiver_user_id: int
+    receiver_user_id: Optional[str]

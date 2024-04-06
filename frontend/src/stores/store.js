@@ -2,10 +2,8 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useStore = defineStore('store', () => {
-  const isLinked = false
-  //  ref(localStorage.getItem('isLinked') === 'false')
-  const user = null
-  // ref(localStorage.getItem('user'))
+  const isLinked = ref(localStorage.getItem('isLinked') === 'false')
+  const user = ref(JSON.parse(localStorage.getItem('user')))
   const challengeId = ref(localStorage.getItem('challengeId'))
   const isVideo = (resourcePath) => {
     const videoExtensions = ['mp4']; 

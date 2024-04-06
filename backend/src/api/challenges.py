@@ -101,7 +101,7 @@ async def create_challenge(
 
 @router.get("/challenges")
 async def get_challenges(
-    user_id: int, db: Session = Depends(get_db)
+    user_id: str, db: Session = Depends(get_db)
 ) -> List[Challenge]:
     challenges_entries = db.exec(select(ChallengeTable)).all()
     challenges = map_challenge_list(user_id, challenges_entries, db)
@@ -110,7 +110,7 @@ async def get_challenges(
 
 
 def map_challenge_list(
-    logged_in_user_id: int, challenges_entries: List[ChallengeTable], db: Session
+    logged_in_user_id: str, challenges_entries: List[ChallengeTable], db: Session
 ) -> List[Challenge]:
     challenges = []
 
@@ -196,7 +196,7 @@ async def get_pending_challenges(
 
 @router.get("/challenges/{userId}/done")
 async def get_done_challenges(
-    userId: str, logged_in_user_id: int, db: Session = Depends(get_db)
+    userId: str, logged_in_user_id: str, db: Session = Depends(get_db)
 ) -> List[Challenge]:
     challenges_entries = db.exec(
         select(ChallengeTable)
@@ -226,26 +226,38 @@ async def get_accepted_challenges(
 
 @router.get("/challenges/{userId}/created")
 async def get_created_challenges(
-    userId: int, db: Session = Depends(get_db)
+    userId: str, db: Session = Depends(get_db)
 ) -> List[CreatedChallenges]:
     challenge_entries: List[ChallengeTable] = db.exec(
         select(ChallengeTable).where(
             or_(
                 ChallengeTable.status == ChallengeStatus.ACCEPTED,
                 ChallengeTable.status == ChallengeStatus.PENDING,
+                ChallengeTable.status == ChallengeStatus.ASLINK,
             ),
             ChallengeTable.sender_user_id == userId,
         )
     ).all()
+    print("\n-\n-\n-\n-\n-\n")
+    print(challenge_entries)
+    print("\n-\n-\n-\n-\n-\n")
     created_challenges = []
     for challenge_entry in challenge_entries:
         receiver_user = db.exec(
             select(UserTable).where(UserTable.id == challenge_entry.receiver_user_id)
         ).first()
+        if receiver_user:
+            receiver_user_name = receiver_user.username
+            receiver_user_id = receiver_user.id
+        else:
+            receiver_user_name = None
+            receiver_user_id = None
+
         created_challenges.append(
             CreatedChallenges(
-                receiver_user_name=receiver_user.username,
-                receiver_user_id=receiver_user.id,
+                id=challenge_entry.id,
+                receiver_user_name=receiver_user_name,
+                receiver_user_id=receiver_user_id,
                 reward=challenge_entry.reward,
                 hashtags=challenge_entry.hashtags,
                 title=challenge_entry.title,
@@ -260,7 +272,7 @@ async def get_created_challenges(
 async def accept_challenge(
     challenge_id: int,
     image: UploadFile = File(None),
-    user_id: int = Form(...),
+    user_id: str = Form(...),
     comment_text: str = Form(None),
     db: Session = Depends(get_db),
 ):
@@ -348,7 +360,7 @@ async def decline_challenge(challenge_id: int, db: Session = Depends(get_db)):
 
 @router.get("/challenges/{hashtag}")
 async def get_challenges_by_hashtag(
-    userId: int, hashtag: str, db: Session = Depends(get_db)
+    userId: str, hashtag: str, db: Session = Depends(get_db)
 ) -> List[Challenge]:
     hashtag_entry = db.exec(
         select(HashtagTable).where(HashtagTable.text == hashtag)
@@ -365,7 +377,7 @@ async def get_challenges_by_hashtag(
 
 @router.get("/challenges/latest/{limit}")
 async def get_latest_challenges(
-    limit: int, userId: int, db: Session = Depends(get_db)
+    limit: int, userId: str, db: Session = Depends(get_db)
 ) -> List[Challenge]:
     latest_entires = db.exec(
         select(ChallengeTable)

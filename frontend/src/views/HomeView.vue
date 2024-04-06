@@ -49,13 +49,17 @@
       <div v-if="createdChallenges[0]" class="container-md bg-body-tertiary rounded py-2">
         <ul class="px-0 my-0">
           <li  class="row align-items-center py-3 gy-2 gy-lg-0" v-for="createdChallenge in createdChallenges" :key="createdChallenge.id">
-            <div class="col-lg-1"> <RouterLink :to="{ name: 'friendProfile', params: { id: createdChallenge.receiver_user_id } }" class="link-dark fw-bold link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">{{ createdChallenge.receiver_user_name }}</RouterLink></div>
-            <div class="col-lg-2">{{createdChallenge.title}}</div>
-            <div class="col-lg">{{createdChallenge.description}}</div>
-            <div v-if="createdChallenge.reward" class="col-lg-2">Reward: {{createdChallenge.reward}}</div>
-            <div v-if="createdChallenge.hashtags[0]" class="col-lg-2"><RouterLink :to="{ name: 'trending', query: { hashtag: hashtag.text } }" v-for="hashtag in createdChallenge.hashtags" :href="'?hashtag='+ hashtag.text" :key="hashtag.id" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">#{{hashtag.text}}</RouterLink></div>
-            <div v-if="createdChallenge.status=='pending'" class="col-lg-3 text-lg-end">Antwort ausstehend</div>
-            <div v-if="createdChallenge.status=='accepted'" class="col-lg-3 text-lg-end">Challenge accepted</div>
+            <!-- <div class="col-1"> <RouterLink :to="{ name: 'friendProfile', params: { id: createdChallenge.receiver_user_id } }" class="link-dark fw-bold link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">{{ createdChallenge.receiver_user_name }}</RouterLink></div> -->
+            <div class="col-2">{{createdChallenge.title}}</div>
+            <div class="col-">{{createdChallenge.description}}</div>
+            <div v-if="createdChallenge.reward" class="col-4 col-lg-2">Reward: {{createdChallenge.reward}}</div>
+            <!-- <div v-if="createdChallenge.hashtags[0]" class="col-2"><RouterLink :to="{ name: 'trending', query: { hashtag: hashtag.text } }" v-for="hashtag in createdChallenge.hashtags" :href="'?hashtag='+ hashtag.text" :key="hashtag.id" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">#{{hashtag.text}}</RouterLink></div> -->
+            <div v-if="createdChallenge.status=='pending'" class="col-12 col-lg-3 text-lg-end">Antwort ausstehend</div>
+            <div v-if="createdChallenge.status=='accepted'" class="col-12 col-lg-3 text-lg-end">Challenge accepted</div>
+            <div v-if="createdChallenge.status=='aslink'" class="col-12 col-lg-3 text-lg-end">
+            <button type="button" class="btn btn-primary" @click="openModal(createdChallenge)">Link</button>
+            <button id="invisibleOpenModalButton" style="visibility: hidden;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
+            </div>
           </li>
         </ul>
       </div>
@@ -74,12 +78,29 @@
       </div>
     </div>
 
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Challenge Link</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            http://{{ipv4}}:3000/registrieren?challengeId={{challengeId}}
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" @click="copyTextToClipboard()">Kopieren</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </template>
 
 <script setup>
 import challengeService from "../services/challenge.service";
-import {useStore} from '../stores/store'
-import {ref} from 'vue'
+import { useStore } from '../stores/store'
+import { ref } from 'vue'
 import ProveChallengeModal from '../components/ProveChallengeModal.vue'
 const store = useStore()
 const pendingChallenges = ref([])
@@ -126,6 +147,8 @@ const getCreatedChallenges = async () => {
     const res = await challengeService.getCreatedChallenges(store.user.uid)
     if (res.status == 200) {
       createdChallenges.value = res.data
+      console.log("Created Challenges")
+      console.log(createdChallenges.value)
     }
   } catch (error) {
     console.log(error)
@@ -153,6 +176,17 @@ const declineChallenge = async (challengeId) => {
   } catch (error) {
     console.log(error)
   }
+}
+
+const openModal = () => {
+  if (!challenge.value.friend_id) document.getElementById('invisibleOpenModalButton').click();
+}
+
+const copyTextToClipboard = () => {
+  navigator.clipboard.writeText(`http://${ipv4}:3000/registrieren?challengeId=${challengeId.value}`).then(function() {
+  }).catch(err => {
+    console.error('Error in copying link: ', err);
+  });
 }
 
 getAcceptedChallenges()

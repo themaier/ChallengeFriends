@@ -30,29 +30,35 @@ initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 const app = createApp(App)
+//  BOOTSTRAP init
 app.use(bootstrap)
 app.use(createPinia())
 app.use(router)
 
-const auth = getAuth();
 
+const auth = getAuth();
 import { useStore } from './stores/store'
 const store = useStore()
 
 onAuthStateChanged(auth, (user) => {
     if (!user) {
-        signInAnonymously(auth).then(() => {
-            store.user = user
+        signInAnonymously(auth).then((result) => {
+            store.user = result.user;
+            store.isLinked = false;
+            console.log(`User is signed in anonymously with UID: ${result.user.uid}`);
+            localStorage.setItem('user', JSON.stringify(result.user));
         })
-        store.isLinked = false;
+        .catch((error) => {
+            console.error(`Error during anonymous sign-in: ${error.message}`);
+        });
     } else {
         store.isLinked = true;
+        console.log(`User is signed in linked with UID: ${user.uid}`);
+        localStorage.setItem('user', JSON.stringify(user.toJSON()));
+        store.user = user;
+        store.isLinked = true;
     }
-    console.log(`User is signed in with UID: ${user.uid}`);
-    store.user = user;
-    
 });
-
 
 
 app.mount('#app')

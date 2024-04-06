@@ -18,8 +18,8 @@ class ChallengeTable(SQLModel, table=True):
     __tablename__ = "challenges"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    sender_user_id: int
-    receiver_user_id: Optional[int] = None
+    sender_user_id: str
+    receiver_user_id: Optional[str] = None
     title: str
     description: str
     reward: Optional[str]

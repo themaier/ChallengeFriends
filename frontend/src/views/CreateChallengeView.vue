@@ -98,6 +98,7 @@ const successMessage = ref('')
 const needsValidation = ref(false)
 const challengeId = ref('')
 const store = useStore()
+console.log(`User Create Challenge: ${store.user.uid}`);
 const challenge = ref({
     user_id: store.user.uid,
     challenge_name: '',
@@ -125,6 +126,7 @@ const createChallenge = async () => {
     if (challenge.value.hashtags_list)	{
       challenge.value.hashtags_list = challenge.value.hashtags_list.replace(/[#\s]/g, '')
     }
+    console.log(challenge.value)
     const res = await challengeService.createChallenge(challenge.value)
     if (res.status == 200) {
       if (!challenge.value.friend_id) document.getElementById('invisibleOpenModalButton').click();
