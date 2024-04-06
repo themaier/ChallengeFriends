@@ -47,7 +47,7 @@ const onFileChanged = (e) => {
 const addComment = async (id) => {
     try {
         if(!commentText.value && !file.value) return
-        const res = await challengeService.addComment(id, store.user.id, commentText.value, file.value)
+        const res = await challengeService.addComment(id, store.user.uid, commentText.value, file.value)
         if (res.status == 200) {
             file.value = null
             document.querySelector('#formFile').value = null

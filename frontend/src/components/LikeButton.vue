@@ -11,7 +11,7 @@ const { challenge } = defineProps(['challenge']);
 
 const likeChallenge = async (challenge) => {
     try {
-        const response = await challengeService.likeChallenge(challenge.id, store.user.id)
+        const response = await challengeService.likeChallenge(challenge.id, store.user.uid)
         if (response.status == 200) {
             challenge.likes.has_liked = !challenge.likes.has_liked
             if(challenge.likes.has_liked) {
