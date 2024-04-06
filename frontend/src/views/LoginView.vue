@@ -28,7 +28,7 @@
 
 <script setup>
 import router from '../router/index.js';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useStore } from '../stores/store'
 import { useRoute } from 'vue-router';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -87,4 +87,11 @@ async function linkAccount(credentials){
             errorMessage.value = error;
     });
 }
+
+watch(() => store.isLinked, (isLinked) => {
+  if (isLinked) {
+    router.push({name: 'home'});
+  }
+});
+
 </script>
