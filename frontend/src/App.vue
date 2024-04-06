@@ -9,29 +9,26 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item" v-if="store.loggedIn">
+                <li class="nav-item">
                   <RouterLink class="nav-link" aria-current="page" :to="{ name: 'home' }">Meine Challenges</RouterLink>
                 </li>
-                <li class="nav-item" v-if="store.loggedIn">
+                <li class="nav-item">
                   <RouterLink class="nav-link" :to="{ name: 'trending' }">Trending</RouterLink>
                 </li>
-                <li class="nav-item" v-if="store.loggedIn">
+                <li class="nav-item">
                   <RouterLink class="nav-link" :to="{ name: 'create' }">Challenge erstellen</RouterLink>
                 </li>
-                <li class="nav-item" v-if="store.loggedIn">
+                <li class="nav-item">
                   <RouterLink class="nav-link" :to="{ name: 'completed' }">Vergangene Challenges</RouterLink>
                 </li>
-                <li class="nav-item" v-if="store.loggedIn">
+                <li class="nav-item">
                   <RouterLink class="nav-link" :to="{ name: 'friends' }">Freunde</RouterLink>
                 </li>
-                <li class="nav-item" v-if="!store.loggedIn">
-                  <RouterLink class="btn btn-primary ms-lg-2 mt-2 mt-lg-0" :to="{ name: 'signUp' }">Registrieren</RouterLink>
+                <li class="nav-item" v-if="!store.isLinked">
+                  <RouterLink class="btn btn-primary ms-lg-2 mt-2 mt-lg-0" :to="{ name: 'login' }">Anmelden</RouterLink>
                 </li>
-                <li class="nav-item" v-if="!store.loggedIn">
-                  <RouterLink class="btn btn-outline-primary ms-lg-2 mt-2 mt-lg-0" :to="{ name: 'signIn' }">Anmelden</RouterLink>
-                </li>
-                <li class="nav-item" v-if="store.loggedIn">
-                  <RouterLink :to="{ name: 'signIn' }">
+                <li class="nav-item" v-if="store.isLinked">
+                  <RouterLink :to="{ name: 'home' }">
                     <button @click="logout" class="btn btn-danger ms-lg-2 mt-2 mt-lg-0">Abmelden</button>
                   </RouterLink>
                 </li>
@@ -53,9 +50,9 @@ import {useStore} from './stores/store'
 const store = useStore()
 
 function logout () {
-  store.loggedIn = false
-  localStorage.removeItem('loggedIn')
-  localStorage.removeItem('user')
+  store.isLinked = false
+  // localStorage.removeItem('loggedIn')
+  // localStorage.removeItem('user')
   store.user = null
 }
 </script>

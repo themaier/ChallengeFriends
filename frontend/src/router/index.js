@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import SignInView from '../views/SignInView.vue'
-import SignUpView from '../views/SignUpView.vue'
+import LoginView from '../views/LoginView.vue'
 import CreateChallengeView from '../views/CreateChallengeView.vue'
 import TrendingView from '../views/TrendingView.vue'
 import FriendsView from '../views/FriendsView.vue'
@@ -19,14 +18,9 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
-      path: '/anmelden',
-      name: 'signIn',
-      component: SignInView
-    },
-    {
-      path: '/registrieren',
-      name: 'signUp',
-      component: SignUpView,
+      path: '/login',
+      name: 'login',
+      component: LoginView,
     },
     {
       path: '/erstellen',
@@ -61,17 +55,18 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  const store = useStore()
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.loggedIn) {
-      next()
-    } else {
-      next({ name: 'signIn' })
-    }
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   const store = useStore()
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (store.isLinked) {
+//       next()
+//     } else {
+//       // next({ name: 'signIn' })
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router
