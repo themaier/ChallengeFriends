@@ -15,7 +15,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -26,7 +25,6 @@ const router = createRouter({
       path: '/erstellen',
       name: 'create', 
       component: CreateChallengeView,
-      meta: { requiresAuth: true }
     },
     {
       path: '/freunde',
@@ -38,13 +36,11 @@ const router = createRouter({
       path: '/trends',
       name: 'trending',
       component: TrendingView,
-      meta: { requiresAuth: true }
     },
     {
       path: '/abgeschlossen',
       name: 'completed',
       component: CompletedChallengesView,
-      meta: { requiresAuth: true }
     },
     {
       path: '/user/:id',
@@ -55,18 +51,17 @@ const router = createRouter({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   const store = useStore()
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     if (store.isLinked) {
-//       next()
-//     } else {
-//       // next({ name: 'signIn' })
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const store = useStore()
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.isLinked) {
+      next()
+    } else {
+      next({ name: 'login' })
+    }
+  } else {
+    next()
+  }
+})
 
 export default router

@@ -100,7 +100,7 @@ const uploadedSucessfully = () => {
 }
 const getAcceptedChallenges = async () => {
   try {
-    const res = await challengeService.getAcceptedChallenges(store.user.id)
+    const res = await challengeService.getAcceptedChallenges(store.user.uid)
     if (res.status == 200) {
       acceptedChallenges.value = res.data
     }
@@ -111,7 +111,7 @@ const getAcceptedChallenges = async () => {
 
 const getPendingChallenges = async () => {
   try {
-    const res = await challengeService.getPendingChallenges(store.user.id)
+    const res = await challengeService.getPendingChallenges(store.user.uid)
     if (res.status == 200) {
       pendingChallenges.value = res.data
       console.log(pendingChallenges.value)
@@ -123,7 +123,7 @@ const getPendingChallenges = async () => {
 
 const getCreatedChallenges = async () => {
   try {
-    const res = await challengeService.getCreatedChallenges(store.user.id)
+    const res = await challengeService.getCreatedChallenges(store.user.uid)
     if (res.status == 200) {
       createdChallenges.value = res.data
     }

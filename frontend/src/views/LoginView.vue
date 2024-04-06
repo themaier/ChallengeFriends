@@ -1,7 +1,7 @@
 <template>
     <div class="container fullpage d-flex flex-grow-1">
         <div class="col-md-5 col m-auto">
-            <h1 class="h2 mb-3">Anmelden</h1>
+            <h1 class="h2 mb-3">Anmelden / Registrieren</h1>
             <form @submit.prevent="signInWithEmail" :class="{'was-validated': wasValidated}" class="needs-validation" novalidate>
                 <div class="mb-3">
                     <input class="form-control" id="emailSignUp" type="email" required v-model="user.email" placeholder="E-mail" />

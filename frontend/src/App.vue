@@ -1,5 +1,6 @@
 
 <template>
+  <div class="d-flex flex-column min-vh-100">
   <header>
       <nav class="navbar bg-dark navbar-expand-lg" data-bs-theme="dark">
         <div class="container-fluid">
@@ -38,9 +39,15 @@
       </nav>
   </header>
 
-  <main>
+  <main class="flex-fill">
     <RouterView />
   </main>
+  <footer class="mt-auto bg-light" v-if="!store.isLinked">
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1);">
+        <router-link :to="{ name: 'login' }">Login</router-link> um Freunde zu sehen
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script setup>

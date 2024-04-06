@@ -70,7 +70,7 @@ const searchChallenge = async () => {
 
 const getTrendingChallenges = async () => {
     try {
-        const response = await challengeService.getTrendingChallenges(store.user.id)
+        const response = await challengeService.getTrendingChallenges(store.user.uid)
         if (response.status == 200) {
             challenges.value = response.data
             title.value = 'Neuesten 10 Challenges'
@@ -82,7 +82,7 @@ const getTrendingChallenges = async () => {
 
 const getChallengesByTag = async (tag) => {
     try {
-        const response = await challengeService.getCompletedChallengesByTag(tag, store.user.id)
+        const response = await challengeService.getCompletedChallengesByTag(tag, store.user.uid)
         hashtagSearch.value = tag
         if (response.status == 200) {
             title.value = '#' + tag

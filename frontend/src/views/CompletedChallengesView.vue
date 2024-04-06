@@ -43,7 +43,7 @@ const store = useStore()
 const challenges = ref([])
 
 const commentedSucessfully = () => {
-  getCompletedChallengesByUser(store.user.id)
+  getCompletedChallengesByUser(store.user.uid)
 }
 
 const formatDate = (dateString) => {
@@ -64,6 +64,6 @@ const getCompletedChallengesByUser = async (id) => {
     }
 }
 
-getCompletedChallengesByUser(store.user.id)
+getCompletedChallengesByUser(store.user.uid)
 
 </script>
