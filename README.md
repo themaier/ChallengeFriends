@@ -70,3 +70,7 @@ Put your password and username into backend/src/db/local.env !
 
 copy from remote to local:
 scp -i "Challenge-Accepted.pem" -r admin@ec2-3-71-199-150.eu-central-1.compute.amazonaws.com:~/Challenge-Accepted/backend/resources C:\Projects\2024
+
+"dependencies": {
+"@paypal/paypal-js": "^8.0.0",
+(package.json)
