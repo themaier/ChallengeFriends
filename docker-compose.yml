@@ -51,11 +51,9 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/frontend
-    command: 
-      - npm i firebase
-      - npm run dev
+    command: npm install firebase && npm run dev
     ports:
-      - 3000:3000
+      - 443:3000
     depends_on:
       #wait for db initialisation
       - backend
