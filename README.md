@@ -68,5 +68,5 @@ Put your password and username into backend/src/db/local.env !
 - Challenge-Accepted.pem is needed
 - Configure extra Storage for the instance!
 
-copy from remote to local:
-scp -i "Challenge-Accepted.pem" -r admin@ec2-18-192-42-44.eu-central-1.compute.amazonaws.com:~/Challenge-Accepted/backend/resources C:\Projects\2024
+copy from remote to local:  
+scp -i "ChallengeFriends.pem" -r admin@ec2-18-192-42-44.eu-central-1.compute.amazonaws.com:/etc/letsencrypt/live/norisknofun.life C:\Projects\2024\ChallengeFriends

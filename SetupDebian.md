@@ -28,3 +28,17 @@ git checkout firebase-anonymous-login
 cd frontend
 touch .env
 nano .env
+
+sudo apt install nginx -y
+sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d norisknofun.life -d www.norisknofun.life
+
+sudo mkdir -p /etc/letsencrypt/ssl #create an SSL directory to save the fullchain and privkey files
+
+sudo cp -r -L /etc/letsencrypt/live/example.com/fullchain.pem /etc/letsencrypt/ssl/
+sudo cp -r -L /etc/letsencrypt/live/example.com/privkey.pem /etc/letsencrypt/ssl/
+
+sudo chown admin:admin /etc/letsencrypt/ssl/fullchain.pem
+sudo chown admin:admin /etc/letsencrypt/ssl/privkey.pem
+
+docker-compose -f docker-compose-production.yml up -d
