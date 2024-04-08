@@ -64,13 +64,9 @@ Put your password and username into backend/src/db/local.env !
 
 ## Access AWS EC2 instance:
 
-- ssh -i "ChallengeFriends.pem" ubuntu@ec2-3-71-199-150.eu-central-1.compute.amazonaws.com
-- ssh -i "ChallengeFriends.pem" admin@ec2-3-71-199-150.eu-central-1.compute.amazonaws.com
+- ssh -i "ChallengeFriends.pem" admin@ec2-18-192-42-44.eu-central-1.compute.amazonaws.com
 - Challenge-Accepted.pem is needed
+- Configure extra Storage for the instance!
 
 copy from remote to local:
-scp -i "Challenge-Accepted.pem" -r admin@ec2-3-71-199-150.eu-central-1.compute.amazonaws.com:~/Challenge-Accepted/backend/resources C:\Projects\2024
-
-"dependencies": {
-"@paypal/paypal-js": "^8.0.0",
-(package.json)
+scp -i "Challenge-Accepted.pem" -r admin@ec2-18-192-42-44.eu-central-1.compute.amazonaws.com:~/Challenge-Accepted/backend/resources C:\Projects\2024
