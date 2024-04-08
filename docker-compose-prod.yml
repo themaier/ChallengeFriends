@@ -45,55 +45,17 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile.prod
-  #   volumes:
-  #     - ./frontend:/frontend
-  #   ports:
-  #     - 3000:3000
-  #   depends_on:
-  #     #wait for db initialisation
-  #     - backend
-
-  # nginx:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.nginx
-  #   volumes:
-  #     - ./certs:/etc/ssl/certs
-  #     - ./private:/etc/ssl/private
-  #   ports:
-  #     - "443:443"
-  #   depends_on:
-  #     - frontend
-
-  webserver:
-    image: nginx:latest
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    volumes:
+      - ./frontend:/frontend
     ports:
-      - 80:80
-      - 443:443
-    restart: always
-    volumes:
-      - ./nginx/conf/:/etc/nginx/conf.d/:ro
-      - ./certbot/www:/var/www/certbot/:ro
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
-
-  nginx:
-    container_name: frontend_reverse_proxy
-    image: nginx:latest
-    ports:
-        - "${SSL_PORT}:443"
-        - "${HTTP_PORT}:80"
-    volumes:
-        - ./:/var/www/certbot/
-        - /etc/letsencrypt/ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
-        - /etc/letsencrypt/ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - 443:3000
+    depends_on:
+      #wait for db initialisation
+      - backend
 
 volumes:
   db_save:
