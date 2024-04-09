@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import SignInView from '../views/SignInView.vue'
-import SignUpView from '../views/SignUpView.vue'
+import LoginView from '../views/LoginView.vue'
 import CreateChallengeView from '../views/CreateChallengeView.vue'
 import TrendingView from '../views/TrendingView.vue'
 import FriendsView from '../views/FriendsView.vue'
@@ -16,23 +15,16 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: { requiresAuth: true }
     },
     {
-      path: '/anmelden',
-      name: 'signIn',
-      component: SignInView
-    },
-    {
-      path: '/registrieren',
-      name: 'signUp',
-      component: SignUpView,
+      path: '/login',
+      name: 'login',
+      component: LoginView,
     },
     {
       path: '/erstellen',
       name: 'create', 
       component: CreateChallengeView,
-      meta: { requiresAuth: true }
     },
     {
       path: '/freunde',
@@ -44,13 +36,11 @@ const router = createRouter({
       path: '/trends',
       name: 'trending',
       component: TrendingView,
-      meta: { requiresAuth: true }
     },
     {
       path: '/abgeschlossen',
       name: 'completed',
       component: CompletedChallengesView,
-      meta: { requiresAuth: true }
     },
     {
       path: '/user/:id',
@@ -64,10 +54,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useStore()
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.loggedIn) {
+    if (store.isLinked) {
       next()
     } else {
-      next({ name: 'signIn' })
+      next({ name: 'login' })
     }
   } else {
     next()

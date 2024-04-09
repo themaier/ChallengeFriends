@@ -46,7 +46,7 @@ const errorMessage = ref('')
 const successMessage = ref('')
 
 const newChallenge = ref({
-    user_id: store.user.id,
+    user_id: store.user.uid,
     challenge_name: challenge.value.title,
     friend_id: null,
     description: challenge.value.description,
@@ -81,7 +81,7 @@ const createChallenge = async () => {
 
 const getFriends = async () => {
   try {
-    const res = await friendshipService.getFriend(store.user.id)
+    const res = await friendshipService.getFriend(store.user.uid)
     if (res.status == 200) {
       friends.value = res.data
     }

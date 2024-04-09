@@ -60,7 +60,7 @@ const formatDate = (dateString) => {
 const getCompletedChallengesByUser = async (id) => {
 
     try {
-        const response = await challengeService.getCompletedChallengesByUser(id, store.user.id)
+        const response = await challengeService.getCompletedChallengesByUser(id, store.user.uid)
         if (response.status == 200) {
             challenges.value = response.data
         }

@@ -61,7 +61,7 @@ const filteredUsers = computed(() => {
 
 async function getFriends() {
   try {
-    const response = await friendshipService.getFriend(store.user.id);
+    const response = await friendshipService.getFriend(store.user.uid);
     if (response.status == 200) {
       friends.value = response.data;
     }
@@ -83,7 +83,7 @@ async function getAllUsers() {
 
 async function addFriend(friendId) {
   try {
-    const response = await friendshipService.addFriend(store.user.id, friendId);
+    const response = await friendshipService.addFriend(store.user.uid, friendId);
     if (response.status == 200) {
       getFriends();
     }
@@ -94,7 +94,7 @@ async function addFriend(friendId) {
 
 async function deleteFriend(friendId) {
   try {
-    const response = await friendshipService.deleteFriend(store.user.id, friendId);
+    const response = await friendshipService.deleteFriend(store.user.uid, friendId);
     if (response.status == 204) {
       getFriends();
     }

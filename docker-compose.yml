@@ -19,7 +19,7 @@ services:
       - db_service
 
   db_service:
-    image: postgres:latest
+    image: postgres:alpine
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -51,9 +51,9 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/frontend
-    command: npm run dev
+    command: npm install firebase && npm run dev
     ports:
-      - 3000:3000
+      - 443:3000
     depends_on:
       #wait for db initialisation
       - backend

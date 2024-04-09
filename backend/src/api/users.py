@@ -20,7 +20,7 @@ async def get_all_users(
 
 @router.get("/users/{user_id}")
 async def get_user_by_id(
-    user_id: int,
+    user_id: str,
     db: Session = Depends(get_db),
 ) -> UserTable:
     db_user = db.exec(select(UserTable).where(UserTable.id == user_id)).first()
