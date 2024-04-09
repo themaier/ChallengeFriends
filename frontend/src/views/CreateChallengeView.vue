@@ -152,7 +152,8 @@ const createChallenge = async () => {
     if (error.response && error.response.status === 406) {
       errorMessage.value= error.response.data.detail
     } else {
-        errorMessage.value="Challenge erstellen hat nicht funktioniert. Bitte versuche es später erneut."
+        errorMessage.value= error.response.data.detail
+        // errorMessage.value="Challenge erstellen hat nicht funktioniert. Bitte versuche es später erneut."
     }
   }
 }

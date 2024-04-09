@@ -9,22 +9,22 @@
           <div class="navbar-collapse" :class="{'collapse': isCollapsed}" ref="navbarCollapse">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <RouterLink class="nav-link" aria-current="page" :to="{ name: 'home' }">Meine Challenges</RouterLink>
+                <RouterLink class="nav-link" @click="isCollapsed = !isCollapsed" aria-current="page" :to="{ name: 'home' }">Meine Challenges</RouterLink>
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link" :to="{ name: 'trending' }">Trending</RouterLink>
+                <RouterLink class="nav-link" @click="isCollapsed = !isCollapsed" :to="{ name: 'trending' }">Trending</RouterLink>
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link" :to="{ name: 'create' }">Challenge erstellen</RouterLink>
+                <RouterLink class="nav-link" @click="isCollapsed = !isCollapsed" :to="{ name: 'create' }">Challenge erstellen</RouterLink>
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link" :to="{ name: 'completed' }">Vergangene Challenges</RouterLink>
+                <RouterLink class="nav-link" @click="isCollapsed = !isCollapsed" :to="{ name: 'completed' }">Vergangene Challenges</RouterLink>
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link" :to="{ name: 'friends' }">Freunde</RouterLink>
+                <RouterLink class="nav-link" @click="isCollapsed = !isCollapsed" :to="{ name: 'friends' }">Freunde</RouterLink>
               </li>
               <li class="nav-item" v-if="!store.isLinked">
-                <RouterLink class="btn btn-primary ms-lg-2 mt-2 mt-lg-0" :to="{ name: 'login' }">Anmelden</RouterLink>
+                <RouterLink class="btn btn-primary ms-lg-2 mt-2 mt-lg-0" @click="isCollapsed = !isCollapsed" :to="{ name: 'login' }">Anmelden</RouterLink>
               </li>
               <li class="nav-item" v-if="store.isLinked">
                 <RouterLink :to="{ name: 'home' }">

@@ -35,10 +35,10 @@ sudo certbot --nginx -d norisknofun.life -d www.norisknofun.life
 
 sudo mkdir -p ~/ssl #create an SSL directory to save the fullchain and privkey files
 
-sudo cp -r -L /etc/letsencrypt/live/example.com/fullchain.pem ~/ssl/
-sudo cp -r -L /etc/letsencrypt/live/example.com/privkey.pem ~/ssl/
+sudo cp -r -L /etc/letsencrypt/live/norisknofun.life/fullchain.pem ~/ChallengeFriends/frontend/nginx/
+sudo cp -r -L /etc/letsencrypt/live/norisknofun.life/privkey.pem ~/ChallengeFriends/frontend/nginx/
 
-sudo chown admin:admin /etc/letsencrypt/ssl/fullchain.pem
-sudo chown admin:admin /etc/letsencrypt/ssl/privkey.pem
+sudo chown admin:admin ~/ChallengeFriends/frontend/nginx/fullchain.pem
+sudo chown admin:admin ~/ChallengeFriends/frontend/nginx/privkey.pem
 
 docker-compose -f docker-compose-production.yml up -d
