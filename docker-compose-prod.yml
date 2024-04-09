@@ -15,7 +15,6 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      #wait for db initialisation
       - db_service
 
   db_service:
@@ -49,28 +48,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
-    volumes:
-      - ./frontend:/frontend
     ports:
       - 80:80
       - 443:443
     depends_on:
-      #wait for db initialisation
       - backend
-
-  # nginx:
-  #   image: nginx:latest
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./frontend/nginx/conf.d:/etc/nginx/conf.d
-  #     - ./frontend/nginx/ssl:/etc/nginx/ssl/
-  #     - ./data/certbot/www:/var/www/certbot
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   depends_on:
-  #     - client
-  #   command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
 volumes:
   db_save:
