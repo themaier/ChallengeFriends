@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const ipv4 = import.meta.env.VITE_IPV4 || 'localhost';
-const API_URL = `http://${ipv4}:8000/users/`
+const ipv4 = import.meta.env.VITE_IPV4 || 'localhost:8000';
+const API_URL = `http://${ipv4}/users/`
 
 class UserService {
 
