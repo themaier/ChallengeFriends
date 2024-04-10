@@ -53,6 +53,8 @@ services:
       - 443:443
     depends_on:
       - backend
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   db_save:
