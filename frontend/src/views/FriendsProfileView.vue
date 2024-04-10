@@ -40,8 +40,8 @@ import userService from '../services/user.service.js'
 import LikeButton from '../components/LikeButton.vue'
 import ShareSection from '../components/ShareSection.vue'
 
-const ipv4 = import.meta.env.VITE_IPV4 || 'localhost:8000';
-const IMG_URL = `http://${ipv4}/resources/`
+const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
+const IMG_URL = `${ipv4}/resources/`
 const route = useRoute()
 const store = useStore()
 const challenges = ref([])

@@ -64,7 +64,7 @@ Put your password and username into backend/src/db/local.env !
 
 ## Access AWS EC2 instance:
 
-- ssh -i "ChallengeFriends.pem" admin@ec2-18-192-42-44.eu-central-1.compute.amazonaws.com
+- ssh -i "ChallengeFriends.pem" admin@ec2-18-194-44-3.eu-central-1.compute.amazonaws.com
 - Challenge-Accepted.pem is needed
 - Configure extra Storage for the instance!
 

@@ -34,8 +34,8 @@ import { ref, defineProps } from 'vue';
 import challengeService from '../services/challenge.service.js'
 import {useStore} from '../stores/store'
 const store = useStore()
-const ipv4 = import.meta.env.VITE_IPV4 || 'localhost:8000';
-const IMG_URL = `http://${ipv4}/resources/`
+const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
+const IMG_URL = `${ipv4}/resources/`
 const { challenges } = defineProps(['challenges']);
 
 const commentText = ref(null)
