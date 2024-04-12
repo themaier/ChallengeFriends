@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
-const API_URL = `${ipv4}/challenges/`;
+const API_URL = `https://mustdoit.de/api/challenges/`;
+// const API_URL = `${ipv4}/challenges/`;
 
 class ChallengeService {
 
