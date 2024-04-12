@@ -57,6 +57,7 @@ services:
     depends_on:
       - backend
     volumes:
+      - ./frontend/.env:/frontend/.env
       - ./frontend/nginx/prod.conf:/etc/nginx/nginx.conf
       - ./frontend/nginx/privkey.pem:/etc/nginx/ssl/privkey.pem
       - ./frontend/nginx/fullchain.pem:/etc/nginx/ssl/fullchain.pem
