@@ -60,6 +60,8 @@ services:
       - ./frontend/nginx/prod.conf:/etc/nginx/nginx.conf
       - ./frontend/nginx/privkey.pem:/etc/nginx/ssl/
       - ./frontend/nginx/fullchain.pem:/etc/nginx/ssl/
+    extra_hosts: #need for linux
+      - "host.docker.internal:host-gateway"
 
 volumes:
   db_save:
