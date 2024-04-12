@@ -16,6 +16,7 @@ def app() -> FastAPI:
         title="Challenge-Accepted",
         version="1.0.0",
         swagger_ui_parameters={"tryItOutEnabled": True},
+        docs_url="/api/docs",
     )
 
     app.add_middleware(
@@ -32,18 +33,24 @@ def app() -> FastAPI:
     if not os.path.exists("../backend/resources"):
         os.makedirs("../backend/resources")
 
-    app.include_router(user_router)
-    app.include_router(challenge_router)
-    app.include_router(friends_router)
-    app.include_router(hashtags_router)
+    app.include_router(user_router, prefix="/api")
+    app.include_router(challenge_router, prefix="/api")
+    app.include_router(friends_router, prefix="/api")
+    app.include_router(hashtags_router, prefix="/api")
 
     app.mount(
-        "/resources", StaticFiles(directory="../backend/resources"), name="resources"
+        "/api/resources",
+        StaticFiles(directory="../backend/resources"),
+        name="resources",
     )
 
-    @app.get("/", include_in_schema=False)
+    @app.get("/api/", include_in_schema=False)
     async def docs_redirect():
-        return RedirectResponse(url="/docs")
+        return RedirectResponse(url="/api/docs")
+
+    @app.get("/", include_in_schema=False)
+    async def docs_redirect2():
+        return RedirectResponse(url="/api/docs")
 
     return app
 
