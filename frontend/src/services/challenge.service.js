@@ -6,7 +6,7 @@ const API_URL = `${ipv4}/challenges/`;
 class ChallengeService {
 
     async createChallenge(challenge) {
-        return await axios.post(API_URL, challenge).then(response => {
+        return await axios.post(API_URL, challenge, { httpsAgent }).then(response => {
             return response
         })
     }
