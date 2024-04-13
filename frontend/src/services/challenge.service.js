@@ -1,7 +1,9 @@
 import axios from 'axios';
+import https from 'https'
 
 const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
 const API_URL = `${ipv4}/challenges/`;
+const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 const config = API_URL.startsWith('https://') ? { httpsAgent } : {};
 
 class ChallengeService {
