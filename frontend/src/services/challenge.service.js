@@ -1,17 +1,12 @@
-// import axios from 'axios';
-const axios_lib = require('axios');
-const https = require('https');
-const axios = axios_lib.create({ httpsAgent: agent });
+import axios from 'axios';
 
 const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
-// const API_URL = `${ipv4}/challenges/`;
-const API_URL = `https://mustdoit.de/api/challenges/`;
+const API_URL = `${ipv4}/challenges/`;
 
 class ChallengeService {
 
     async createChallenge(challenge) {
-        return await https.post("https://mustdoit.de/challenges/", ).then(response => {
-        // return await axios.post(API_URL, challenge).then(response => {
+        return await axios.post(API_URL, challenge).then(response => {
             return response
         })
     }
