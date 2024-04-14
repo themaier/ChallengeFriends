@@ -31,10 +31,7 @@ import router from '../router/index.js';
 import { ref, watch } from 'vue';
 import { useStore } from '../stores/store'
 import { useRoute } from 'vue-router';
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { EmailAuthProvider } from "firebase/auth";
-import { getAuth, linkWithCredential, } from "firebase/auth";
-
+import { getAuth, linkWithCredential, EmailAuthProvider, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 
 

@@ -16,7 +16,6 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      #wait for db initialisation
       - db_service
 
   db_service:
@@ -48,26 +47,22 @@ services:
       - pgadmin-data:/var/lib/pgadmin
 
   frontend:
-    container_name: frontend
+    container_name: frontend_proxy
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/frontend
-    command: npm run dev
-    ports:
-      - 3000:3000
-    depends_on:
-      #wait for db initialisation
-      - backend
-
-  nginx:
-    image: nginx:latest
-    container_name: reverse_proxy
+      dockerfile: Dockerfile.prod
     ports:
       - 80:80
+      - 443:443
+    depends_on:
+      - backend
     volumes:
-      - ./frontend/nginx/dev.conf:/etc/nginx/nginx.conf
+      - ./frontend/.env:/frontend/.env
+      - ./frontend/nginx/prod.conf:/etc/nginx/nginx.conf
+      - ./frontend/nginx/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - ./frontend/nginx/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+    extra_hosts: #need for linux
+      - "host.docker.internal:host-gateway"
 
 volumes:
   db_save:

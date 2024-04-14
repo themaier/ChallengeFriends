@@ -4,8 +4,10 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+// import { initializeApp } from "firebase/app";
+// import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 import App from './App.vue'
 import router from './router'

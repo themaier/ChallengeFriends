@@ -1,7 +1,9 @@
 import axios from 'axios'
 
-const ipv4 = import.meta.env.VITE_IPV4 || 'localhost';
-const API_URL = `http://${ipv4}:8000/friendship/`
+const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
+// const API_URL = `${ipv4}/friendship/`
+const API_URL = `https://mustdoit.de/api/friendship/`;
+
 
 class FriendshipService {
 
@@ -27,7 +29,7 @@ class FriendshipService {
     }
 
     async deleteFriend(user_id, friend_user_id) {
-        return await axios.delete(API_URL + "?user_id=" + user_id + "&friend_user_id=" + friend_user_id ).then(response => {
+        return await axios.delete(API_URL + "?user_id=" + user_id + "&friend_user_id=" + friend_user_id).then(response => {
             return response
         })
     }

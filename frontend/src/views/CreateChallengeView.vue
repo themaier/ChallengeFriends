@@ -73,7 +73,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        http://{{ipv4}}:3000/registrieren?challengeId={{challengeId}}
+        <!-- http://{{ipv4}}:3000/registrieren?challengeId={{challengeId}} -->
       </div>
       <div class="modal-footer d-flex justify-content-center">
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="copyTextToClipboard()">Kopieren</button>
@@ -152,7 +152,8 @@ const createChallenge = async () => {
     if (error.response && error.response.status === 406) {
       errorMessage.value= error.response.data.detail
     } else {
-        errorMessage.value="Challenge erstellen hat nicht funktioniert. Bitte versuche es später erneut."
+        errorMessage.value= error.response.data.detail
+        // errorMessage.value="Challenge erstellen hat nicht funktioniert. Bitte versuche es später erneut."
     }
   }
 }

@@ -32,3 +32,5 @@ __pycache__/
 
 Challenge-Accepted.pem
 ChallengeFriends.pem
+frontend/nginx/fullchain.pem
+frontend/nginx/privkey.pem

@@ -66,8 +66,14 @@ services:
     container_name: reverse_proxy
     ports:
       - 80:80
+      - 443:443
     volumes:
-      - ./frontend/nginx/dev.conf:/etc/nginx/nginx.conf
+      - ./frontend/.env:/frontend/.env
+      - ./frontend/nginx/devprod.conf:/etc/nginx/nginx.conf
+      - ./frontend/nginx/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - ./frontend/nginx/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+    extra_hosts: #need for linux
+      - "host.docker.internal:host-gateway"
 
 volumes:
   db_save:

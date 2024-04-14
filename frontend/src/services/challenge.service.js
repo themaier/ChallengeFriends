@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const ipv4 = import.meta.env.VITE_IPV4 || 'localhost';
-const API_URL = `http://${ipv4}:8000/challenges/`;
+const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
+const API_URL = `${ipv4}/challenges/`;
 
 class ChallengeService {
 
@@ -75,7 +75,7 @@ class ChallengeService {
         return await axios.put(`${API_URL}${challengeId}/done`, formData, {
             headers: {
             'Content-Type': 'multipart/form-data',
-            },
+            }
         }).then(response => {
             return response
         })
@@ -93,7 +93,7 @@ class ChallengeService {
         return await axios.put(`${API_URL}${challengeId}/comment`, formData, {
             headers: {
             'Content-Type': 'multipart/form-data',
-            },
+            }
         }).then(response => {
             return response
         })

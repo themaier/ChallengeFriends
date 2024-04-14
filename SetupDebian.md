@@ -16,6 +16,7 @@ echo \
  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+sudo apt install net-tools
 
 DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
 mkdir -p $DOCKER_CONFIG/cli-plugins
@@ -28,3 +29,17 @@ git checkout firebase-anonymous-login
 cd frontend
 touch .env
 nano .env
+
+sudo apt install nginx -y
+sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d norisknofun.life -d www.norisknofun.life
+
+sudo mkdir -p ~/ssl #create an SSL directory to save the fullchain and privkey files
+
+sudo cp -r -L /etc/letsencrypt/live/mustdoit.de/fullchain.pem ~/ChallengeFriends/frontend/nginx/
+sudo cp -r -L /etc/letsencrypt/live/mustdoit.de/privkey.pem ~/ChallengeFriends/frontend/nginx/
+
+sudo chown admin:admin ~/ChallengeFriends/frontend/nginx/fullchain.pem
+sudo chown admin:admin ~/ChallengeFriends/frontend/nginx/privkey.pem
+
+docker-compose -f docker-compose-production.yml up -d
