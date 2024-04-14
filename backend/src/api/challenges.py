@@ -14,6 +14,7 @@ from src.chatgpt.api_call import check_user_challenge_for_legal
 import uuid
 from src.email.send_email import send_email_background
 from src.api_models.email import ChallengeEmail
+from shortuuid import ShortUUID
 
 router = APIRouter(tags=["Challenges"])
 
@@ -25,7 +26,7 @@ async def create_challenge(
     challenge: ChallengeForm,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-) -> int:
+) -> str:
     challenges_per_user = db.exec(
         select(ChallengeTable).where(
             ChallengeTable.receiver_user_id == challenge.friend_id
@@ -83,6 +84,7 @@ async def create_challenge(
                 list_hashtags.append(hashtag_entry)
 
     challenge_entry = ChallengeTable(
+        id=ShortUUID().random(length=10),
         sender_user_id=challenge.user_id,
         receiver_user_id=challenge.friend_id,
         title=challenge.challenge_name,
@@ -270,7 +272,7 @@ async def get_created_challenges(
 
 @router.put("/challenges/{challenge_id}/comment")
 async def accept_challenge(
-    challenge_id: int,
+    challenge_id: str,
     image: UploadFile = File(None),
     user_id: str = Form(...),
     comment_text: str = Form(None),
@@ -302,7 +304,7 @@ async def accept_challenge(
 
 
 @router.put("/challenges/{challenge_id}/accept")
-async def accept_challenge(challenge_id: int, db: Session = Depends(get_db)):
+async def accept_challenge(challenge_id: str, db: Session = Depends(get_db)):
     challenge = db.exec(
         select(ChallengeTable).where(ChallengeTable.id == challenge_id)
     ).first()
@@ -319,7 +321,7 @@ async def complete_challenge_image():
 
 @router.put("/challenges/{challenge_id}/done")
 async def complete_challenge(
-    challenge_id: int, image: UploadFile, db: Session = Depends(get_db)
+    challenge_id: str, image: UploadFile, db: Session = Depends(get_db)
 ):
     challenge = db.exec(
         select(ChallengeTable).where(ChallengeTable.id == challenge_id)
@@ -348,7 +350,7 @@ async def complete_challenge(
 
 
 @router.put("/challenges/{challenge_id}/decline")
-async def decline_challenge(challenge_id: int, db: Session = Depends(get_db)):
+async def decline_challenge(challenge_id: str, db: Session = Depends(get_db)):
     challenge = db.exec(
         select(ChallengeTable).where(ChallengeTable.id == challenge_id)
     ).first()
@@ -412,7 +414,7 @@ async def toggle_challenge_like(
 
 
 @router.get("/challenges/{challenge_id}/like")
-async def get_likes(challenge_id: int, db: Session = Depends(get_db)) -> int:
+async def get_likes(challenge_id: str, db: Session = Depends(get_db)) -> int:
     liked_entries = db.exec(
         select(LikesTable).where(
             LikesTable.challenge_id == challenge_id, LikesTable.state == True

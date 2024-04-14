@@ -15,14 +15,14 @@ class LikeChallengeResponse(BaseModel):
 class Comment(BaseModel):
     id: Optional[int]
     user_id: str
-    challenge_id: int
+    challenge_id: str
     username: str
     text: Optional[str]
     image_path: Optional[str]
 
 
 class Challenge(BaseModel):
-    id: int
+    id: str
     publisher_name: str
     receiver_name: str
     receiver_id: str
@@ -38,7 +38,7 @@ class Challenge(BaseModel):
 
 class LikeChallengeRequest(BaseModel):
     user_id: str
-    challenge_id: int
+    challenge_id: str
 
 
 class ChallengeForm(BaseModel):
@@ -53,7 +53,7 @@ class ChallengeForm(BaseModel):
 
 
 class ChallengeCompleted(BaseModel):
-    challenge_id: int
+    challenge_id: str
     file: UploadFile
 
 
@@ -63,7 +63,7 @@ class Friend(BaseModel):
 
 
 class CreatedChallenges(BaseModel):
-    id: int
+    id: str
     receiver_user_name: Optional[str]
     title: str
     description: str

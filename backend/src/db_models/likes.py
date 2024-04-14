@@ -8,6 +8,5 @@ class LikesTable(SQLModel, table=True):
     __tablename__ = "likes"
 
     user_id: str = Field(default=None, primary_key=True)
-    challenge_id: int = Field(default=None, primary_key=True)
+    challenge_id: str = Field(default=None, primary_key=True)
     state: bool
-

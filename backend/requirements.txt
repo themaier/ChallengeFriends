@@ -14,3 +14,4 @@ python-multipart
 openai
 paypalrestsdk
 fastapi-mail
+shortuuid
