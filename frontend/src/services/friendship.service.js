@@ -1,8 +1,7 @@
 import axios from 'axios'
 
-const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
-// const API_URL = `${ipv4}/friendship/`
-const API_URL = `https://mustdoit.de/api/friendship/`;
+const ipv4 = import.meta.env.VITE_IPV4+"/api" || 'http://localhost:8000';
+const API_URL = `${ipv4}/friendship/`
 
 
 class FriendshipService {
