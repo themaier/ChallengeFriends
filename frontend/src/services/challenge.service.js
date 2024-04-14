@@ -7,10 +7,10 @@ const API_URL = `https://mustdoit.de/api/challenges/`;
 class ChallengeService {
 
     async createChallenge(challenge) {
-        return await axios.post("https://mustdoit.de/api/challenges/").then(response => {
-        // return await axios.post(API_URL, challenge).then(response => {
-            return response
-        })
+        // return await axios.post("https://mustdoit.de/api/challenges/").then(response => {
+        // // return await axios.post(API_URL, challenge).then(response => {
+        //     return response
+        // })
     }
 
     async getPendingChallenges(id) {
