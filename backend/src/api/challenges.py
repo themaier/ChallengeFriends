@@ -270,6 +270,26 @@ async def get_created_challenges(
     return created_challenges
 
 
+@router.put("/challenges/{challenge_id}/link", status_code=200)
+async def add_unlinked_challenge(
+    challenge_id: str,
+    receiver_user_id: str,
+    db: Session = Depends(get_db),
+):
+    unlinked_challenge = db.exec(
+        select(ChallengeTable).where(
+            (ChallengeTable.id == challenge_id)
+            & (ChallengeTable.status == ChallengeStatus.ASLINK)
+            & (ChallengeTable.sender_user_id != receiver_user_id)
+        )
+    ).first()
+    if unlinked_challenge:
+        unlinked_challenge.status = ChallengeStatus.PENDING
+        unlinked_challenge.receiver_user_id = receiver_user_id
+        db.add(unlinked_challenge)
+        db.commit()
+
+
 @router.put("/challenges/{challenge_id}/comment")
 async def accept_challenge(
     challenge_id: str,

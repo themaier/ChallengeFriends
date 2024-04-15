@@ -86,7 +86,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <!-- http://{{ipv4}}:3000/registrieren?challengeId={{challengeId}} -->
+            {{ipv4}}?challengeId={{challengeId}}
           </div>
           <div class="modal-footer d-flex justify-content-center">
             <button type="button" class="btn btn-primary" @click="copyTextToClipboard()">Kopieren</button>
@@ -100,8 +100,10 @@
 <script setup>
 import challengeService from "../services/challenge.service";
 import { useStore } from '../stores/store'
+import { useRoute } from 'vue-router';
 import { ref } from 'vue'
 import ProveChallengeModal from '../components/ProveChallengeModal.vue'
+const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:3000';
 const store = useStore()
 const pendingChallenges = ref([])
 const acceptedChallenges = ref([])
@@ -183,7 +185,7 @@ const openModal = () => {
 }
 
 const copyTextToClipboard = () => {
-  navigator.clipboard.writeText(`http://${ipv4}:3000/registrieren?challengeId=${challengeId.value}`).then(function() {
+  navigator.clipboard.writeText(`${ipv4}?challengeId=${challengeId.value}`).then(function() {
   }).catch(err => {
     console.error('Error in copying link: ', err);
   });
@@ -192,4 +194,10 @@ const copyTextToClipboard = () => {
 getAcceptedChallenges()
 getPendingChallenges()
 getCreatedChallenges()
+const route = useRoute()
+const challengeId = route.query.challengeId
+if (challengeId) {
+  challengeService.addUnlinkedChallenge(challengeId, store.user.uid)
+}
+
 </script>

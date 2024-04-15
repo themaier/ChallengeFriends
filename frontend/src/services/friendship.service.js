@@ -1,8 +1,11 @@
 import axios from 'axios'
 
-const ipv4 = import.meta.env.VITE_IPV4+"/api" || 'http://localhost:8000';
-const API_URL = `${ipv4}/friendship/`
-
+let API_URL = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
+if (API_URL.startsWith("https:")) {
+    API_URL = `${API_URL}/api/friendship/`;
+} else {
+    API_URL = `${API_URL}/friendship/`;
+}
 
 class FriendshipService {
 

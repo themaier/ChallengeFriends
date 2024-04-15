@@ -90,9 +90,10 @@ import { ref } from 'vue'
 import challengeService from "../services/challenge.service.js";
 import friendshipService from "../services/friendship.service.js";
 import { useStore } from '../stores/store'
+import router from '../router/index.js';
 import CheckoutPayment from '../components/CheckoutPayment.vue'
 import CheckoutItem from '../components/CheckoutItem.vue'
-const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
+const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:3000';
 const errorMessage = ref('')
 const successMessage = ref('')
 const needsValidation = ref(false)
@@ -144,8 +145,8 @@ const createChallenge = async () => {
         chatgpt_check: false,
         email_check: false,
       };
-      
     }
+    router.push({name: 'home'});
   } catch (error) { 
     successMessage.value = ''
     errorMessage.value = ''
