@@ -89,7 +89,7 @@
             {{ipv4}}?challengeId={{unlinkedChallengeId}}
           </div>
           <div class="modal-footer d-flex justify-content-center">
-            <button type="button" class="btn btn-primary" @click="copyTextToClipboard()">Kopieren</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="copyTextToClipboard()">Kopieren</button>
           </div>
         </div>
       </div>
@@ -192,7 +192,7 @@ const openModal = async (challengeId) => {
 }
 
 const copyTextToClipboard = () => {
-  navigator.clipboard.writeText(`${ipv4}?challengeId=${challengeId.value}`).then(function() {
+  navigator.clipboard.writeText(`${ipv4}?challengeId=${unlinkedChallengeId.value}`).then(function() {
   }).catch(err => {
     console.error('Error in copying link: ', err);
   });
