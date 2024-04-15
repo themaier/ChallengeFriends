@@ -135,7 +135,7 @@ def map_challenge_list(
                 id=comment.id,
                 user_id=comment.user_id,
                 challenge_id=comment.challenge_id,
-                username=username,
+                username="username",
                 text=comment.text,
                 image_path=comment.image_path,
             )
@@ -156,15 +156,15 @@ def map_challenge_list(
         if has_liked == None:
             has_liked = False
         likes = LikeChallengeResponse(likes_count=likes_count, has_liked=has_liked)
-        receiver_name = (
-            db.exec(select(UserTable).where(UserTable.id == challenge.receiver_user_id))
-            .first()
-            .username
-        )
+        # receiver_name = (
+        #     db.exec(select(UserTable).where(UserTable.id == challenge.receiver_user_id))
+        #     .first()
+        #     .username
+        # )
         challenge_obj = Challenge(
             id=challenge.id,
-            publisher_name=user.username,
-            receiver_name=receiver_name,
+            publisher_name="user.username",
+            receiver_name="receiver_name",
             receiver_id=challenge.receiver_user_id,
             title=challenge.title,
             description=challenge.description,

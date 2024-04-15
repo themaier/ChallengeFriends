@@ -57,7 +57,7 @@
             <div v-if="createdChallenge.status=='pending'" class="col-12 col-lg-3 text-lg-end">Antwort ausstehend</div>
             <div v-if="createdChallenge.status=='accepted'" class="col-12 col-lg-3 text-lg-end">Challenge accepted</div>
             <div v-if="createdChallenge.status=='aslink'" class="col-12 col-lg-3 text-lg-end">
-            <button type="button" class="btn btn-primary" @click="openModal(createdChallenge)">Link</button>
+            <button type="button" class="btn btn-primary" @click="openModal(createdChallenge.id)">Link</button>
             <button id="invisibleOpenModalButton" style="visibility: hidden;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
             </div>
           </li>
@@ -86,7 +86,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            {{ipv4}}?challengeId={{challengeId}}
+            {{ipv4}}?challengeId={{unlinkedChallengeId}}
           </div>
           <div class="modal-footer d-flex justify-content-center">
             <button type="button" class="btn btn-primary" @click="copyTextToClipboard()">Kopieren</button>
@@ -108,6 +108,7 @@ const store = useStore()
 const pendingChallenges = ref([])
 const acceptedChallenges = ref([])
 const createdChallenges = ref([])
+let unlinkedChallengeId = ref('')
 const success = ref(false)
 
 const uploadedSucessfully = () => {
@@ -180,8 +181,14 @@ const declineChallenge = async (challengeId) => {
   }
 }
 
-const openModal = () => {
-  if (!challenge.value.friend_id) document.getElementById('invisibleOpenModalButton').click();
+const openModal = async (challengeId) => {
+  try {
+    unlinkedChallengeId.value = challengeId;
+    document.getElementById('invisibleOpenModalButton').click();
+    console.log(unlinkedChallengeId.value)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const copyTextToClipboard = () => {
