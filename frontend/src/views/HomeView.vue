@@ -1,4 +1,8 @@
 <template>
+  <div class="container mt-5">
+    <ChallengeForm />
+  </div>
+
   <div>
     <div class="container-md">
       <h1 class="my-4">Meine Challenges</h1>
@@ -111,11 +115,13 @@
 
 <script setup>
 import { ref } from 'vue'
-import challengeService from "../services/challenge.service";
+import { Modal } from 'bootstrap'
 import { useStore } from '../stores/store'
 import { useRoute } from 'vue-router';
 import challengeService from "../services/challenge.service";
 import ProveChallengeModal from '../components/ProveChallengeModal.vue'
+import ChallengeForm from '../components/ChallengeForm.vue';
+
 const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:3000';
 const store = useStore()
 const pendingChallenges = ref([])
