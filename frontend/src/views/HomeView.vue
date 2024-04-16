@@ -48,17 +48,29 @@
       <div v-if="!createdChallenges[0]">Freunde habe zurzeit keine aktiven Challenges von dir!</div>
       <div v-if="createdChallenges[0]" class="container-md bg-body-tertiary rounded py-2">
         <ul class="px-0 my-0">
-          <li  class="row align-items-center py-3 gy-2 gy-lg-0" v-for="createdChallenge in createdChallenges" :key="createdChallenge.id">
+          <li  class="d-flex flex-wrap align-items-center py-3" v-for="createdChallenge in createdChallenges" :key="createdChallenge.id">
             <!-- <div class="col-1"> <RouterLink :to="{ name: 'friendProfile', params: { id: createdChallenge.receiver_user_id } }" class="link-dark fw-bold link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">{{ createdChallenge.receiver_user_name }}</RouterLink></div> -->
-            <div class="col-2">{{createdChallenge.title}}</div>
-            <div class="col-">{{createdChallenge.description}}</div>
-            <div v-if="createdChallenge.reward" class="col-4 col-lg-2">Reward: {{createdChallenge.reward}}</div>
+            <div class="flex-grow-1 pe-3">
+              <div class="fw-bold">{{ createdChallenge.title }}</div>
+              <div>{{ createdChallenge.description }}</div>
+            </div>
+            <div v-if="createdChallenge.reward" class="d-none d-md-block me-auto pe-3">
+              Reward: {{ createdChallenge.reward }}
+            </div>
             <!-- <div v-if="createdChallenge.hashtags[0]" class="col-2"><RouterLink :to="{ name: 'trending', query: { hashtag: hashtag.text } }" v-for="hashtag in createdChallenge.hashtags" :href="'?hashtag='+ hashtag.text" :key="hashtag.id" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">#{{hashtag.text}}</RouterLink></div> -->
-            <div v-if="createdChallenge.status=='pending'" class="col-12 col-lg-3 text-lg-end">Antwort ausstehend</div>
-            <div v-if="createdChallenge.status=='accepted'" class="col-12 col-lg-3 text-lg-end">Challenge accepted</div>
-            <div v-if="createdChallenge.status=='aslink'" class="col-12 col-lg-3 text-lg-end">
-            <button type="button" class="btn btn-primary" @click="openModal(createdChallenge.id)">Link</button>
-            <button id="invisibleOpenModalButton" style="visibility: hidden;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
+            <div v-if="createdChallenge.status === 'pending' || createdChallenge.status === 'accepted'" class="text-end">
+              <div style="display: inline-block; text-align: left;">
+                <div class="text-truncate" style="max-width: 35%;">
+                  {{ createdChallenge.receiver_user_id }}:
+                </div>
+                <div>
+                  <span v-if="createdChallenge.status=='pending'">Empfangen</span>
+                  <span v-if="createdChallenge.status=='accepted'">Angenommen</span>
+                </div>
+              </div>
+            </div>
+            <div v-if="createdChallenge.status=='aslink'" class="ms-auto">
+              <button type="button" class="btn btn-primary" @click="openModal(createdChallenge.id)">Link</button>
             </div>
           </li>
         </ul>
@@ -78,7 +90,7 @@
       </div>
     </div>
 
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div ref="linkModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -98,18 +110,20 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import challengeService from "../services/challenge.service";
 import { useStore } from '../stores/store'
 import { useRoute } from 'vue-router';
-import { ref } from 'vue'
+import challengeService from "../services/challenge.service";
 import ProveChallengeModal from '../components/ProveChallengeModal.vue'
 const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:3000';
 const store = useStore()
 const pendingChallenges = ref([])
 const acceptedChallenges = ref([])
 const createdChallenges = ref([])
-let unlinkedChallengeId = ref('')
+const unlinkedChallengeId = ref('')
 const success = ref(false)
+const linkModal = ref(null);
 
 const uploadedSucessfully = () => {
   success.value = true
@@ -182,13 +196,9 @@ const declineChallenge = async (challengeId) => {
 }
 
 const openModal = async (challengeId) => {
-  try {
-    unlinkedChallengeId.value = challengeId;
-    document.getElementById('invisibleOpenModalButton').click();
-    console.log(unlinkedChallengeId.value)
-  } catch (error) {
-    console.log(error)
-  }
+  unlinkedChallengeId.value = challengeId;
+  new Modal(linkModal.value).show();
+  console.log(unlinkedChallengeId.value)
 }
 
 const copyTextToClipboard = () => {
@@ -198,13 +208,16 @@ const copyTextToClipboard = () => {
   });
 }
 
-getAcceptedChallenges()
-getPendingChallenges()
-getCreatedChallenges()
 const route = useRoute()
 const challengeId = route.query.challengeId
 if (challengeId) {
-  challengeService.addUnlinkedChallenge(challengeId, store.user.uid)
+  challengeService.addUnlinkedChallenge(challengeId, store.user.uid);
+  getPendingChallenges();
 }
+
+getAcceptedChallenges()
+getPendingChallenges()
+getCreatedChallenges()
+
 
 </script>

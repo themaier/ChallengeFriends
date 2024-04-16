@@ -245,15 +245,15 @@ async def get_created_challenges(
     print("\n-\n-\n-\n-\n-\n")
     created_challenges = []
     for challenge_entry in challenge_entries:
-        receiver_user = db.exec(
-            select(UserTable).where(UserTable.id == challenge_entry.receiver_user_id)
-        ).first()
-        if receiver_user:
-            receiver_user_name = receiver_user.username
-            receiver_user_id = receiver_user.id
-        else:
+        # receiver_user = db.exec(
+        #     select(UserTable).where(UserTable.id == challenge_entry.receiver_user_id)
+        # ).first()
+        if challenge_entry.status == ChallengeStatus.ASLINK:
             receiver_user_name = None
             receiver_user_id = None
+        else:
+            # receiver_user_name = receiver_user.username
+            receiver_user_id = challenge_entry.receiver_user_id
 
         created_challenges.append(
             CreatedChallenges(

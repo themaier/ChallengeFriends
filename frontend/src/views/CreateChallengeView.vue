@@ -53,7 +53,6 @@
             <button type="submit" class="btn btn-primary" style="text-align: center">
               {{ challenge.friend_id ? 'Freund herausfordern' : 'Challenge-Link erstellen' }}
             </button>
-            <button id="invisibleOpenModalButton" style="visibility: hidden;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
             <div v-if="errorMessage != ''" class="mt-2 text-danger">{{errorMessage}}</div>
             <div v-if="successMessage != ''" class="mt-2 text-success">{{successMessage}}</div>
             <div v-if="challenge.chatgpt_check">
@@ -65,7 +64,7 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div ref="linkModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -93,6 +92,7 @@ import { useStore } from '../stores/store'
 import router from '../router/index.js';
 import CheckoutPayment from '../components/CheckoutPayment.vue'
 import CheckoutItem from '../components/CheckoutItem.vue'
+import { Modal } from 'bootstrap'
 const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:3000';
 const errorMessage = ref('')
 const successMessage = ref('')
@@ -113,6 +113,8 @@ const challenge = ref({
   });
 
 const friends = ref('')
+const linkModal = ref(null);
+
 
 const createChallenge = async () => {
   try {
@@ -130,7 +132,7 @@ const createChallenge = async () => {
     console.log(challenge.value)
     const res = await challengeService.createChallenge(challenge.value)
     if (res.status == 200) {
-      if (!challenge.value.friend_id) document.getElementById('invisibleOpenModalButton').click();
+      if (!challenge.value.friend_id) new Modal(linkModal.value).show();
       challengeId.value = res.data
       needsValidation.value = false
       errorMessage.value = ''
