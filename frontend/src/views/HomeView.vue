@@ -8,7 +8,7 @@
       <h1 class="my-4">Meine Challenges</h1>
     </div>
     <div class="container-md bg-body-secondary py-3 rounded mt-4">
-      <h2 class="mb-4">Ausstehende Challenges</h2>
+      <h2 class="mb-4">Neue MustDoIts</h2>
       <div v-if="!pendingChallenges[0]">Keine ausstehenden Challenges zurzeit!</div>
       <div v-if="pendingChallenges[0]" class="container-md bg-body-tertiary rounded py-2">
         <ul class="px-0 my-0">
@@ -38,7 +38,7 @@
     </div>
 
     <div class="container-md bg-body-secondary py-3 rounded mt-4">
-      <h2 class="mb-4">Aktive Challenges</h2>
+      <h2 class="mb-4">Aktive MustDoIts</h2>
       <div v-if="!acceptedChallenges[0]">Keine aktiven Challenges zurzeit!</div>
       <div v-if="acceptedChallenges[0]" class="container-md bg-body-tertiary rounded py-2">
         <ul class="px-0 my-0">

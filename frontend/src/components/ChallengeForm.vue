@@ -5,7 +5,7 @@
     </button>
 
     <div :class="{'collapse': isCollapsed, 'show': !isCollapsed, 'w-100': true, 'mt-3': true}">
-      <div class="card card-body" style="border-radius: 20px;">
+      <div class="card card-body" style="border-radius: 20px; border: 1px solid #808080;">
         <form @submit.prevent="createChallenge" novalidate :class="{'was-validated': needsValidation}" class="needs-validation d-flex flex-column align-items-center">
           <div class="mb-3 w-100">
             <label class="form-label" for="challenge_name">Challenge Name</label>
@@ -32,7 +32,7 @@
               <option v-for="friend in friends" :key="friend.id" :value="friend.id">{{ friend.name }}</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary w-100">
+          <button type="submit" class="btn btn-success w-100">
             {{ challengeForm.friendId ? 'Freund herausfordern' : 'Challenge-Link erstellen' }}
           </button>
           <div v-if="errorMessage != ''" class="mt-2 text-danger">{{errorMessage}}</div>
