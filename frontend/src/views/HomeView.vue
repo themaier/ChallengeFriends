@@ -85,49 +85,31 @@
   <ProveChallengeModal :challenges="acceptedChallenges" @uploadedSucessfully="uploadedSucessfully()" :success="success"></ProveChallengeModal>
 
 
-    <div v-if="success" class="animation">
-      <div class="firework"></div>
-      <div class="firework"></div>
-      <div class="firework"></div>
-      <div class="success-animation">
-        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
-      </div>
+  <div v-if="success" class="animation">
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="success-animation">
+      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
     </div>
-
-    <div ref="linkModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Challenge Link</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            {{ipv4}}?challengeId={{unlinkedChallengeId}}
-          </div>
-          <div class="modal-footer d-flex justify-content-center">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="copyTextToClipboard()">Kopieren</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  </div>
+    
+  <LinkModal ref="linkModal"/>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { Modal } from 'bootstrap'
 import { useStore } from '../stores/store'
 import { useRoute } from 'vue-router';
 import challengeService from "../services/challenge.service";
 import ProveChallengeModal from '../components/ProveChallengeModal.vue'
 import ChallengeForm from '../components/ChallengeForm.vue';
+import LinkModal from '@/components/LinkModal.vue';
 
-const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:3000';
 const store = useStore()
 const pendingChallenges = ref([])
 const acceptedChallenges = ref([])
 const createdChallenges = ref([])
-const unlinkedChallengeId = ref('')
 const success = ref(false)
 const linkModal = ref(null);
 
@@ -202,16 +184,8 @@ const declineChallenge = async (challengeId) => {
 }
 
 const openModal = async (challengeId) => {
-  unlinkedChallengeId.value = challengeId;
-  new Modal(linkModal.value).show();
-  console.log(unlinkedChallengeId.value)
-}
-
-const copyTextToClipboard = () => {
-  navigator.clipboard.writeText(`${ipv4}?challengeId=${unlinkedChallengeId.value}`).then(function() {
-  }).catch(err => {
-    console.error('Error in copying link: ', err);
-  });
+  linkModal.value.showLinkModal(challengeId);
+  console.log(challengeId)
 }
 
 const route = useRoute()
