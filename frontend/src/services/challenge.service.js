@@ -1,7 +1,11 @@
 import axios from 'axios';
 
-const ipv4 = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
-const API_URL = `${ipv4}/challenges/`;
+let API_URL = import.meta.env.VITE_IPV4 || 'http://localhost:8000';
+if (API_URL.startsWith("https:")) {
+    API_URL = `${API_URL}/api/challenges/`;
+} else {
+    API_URL = `${API_URL}/challenges/`;
+}
 
 class ChallengeService {
 
@@ -94,6 +98,14 @@ class ChallengeService {
             headers: {
             'Content-Type': 'multipart/form-data',
             }
+        }).then(response => {
+            return response
+        })
+    }
+
+    async addUnlinkedChallenge(challengeId, userId) {
+        return await axios.put(`${API_URL}${challengeId}/link`, null, {
+            params: { receiver_user_id: userId }
         }).then(response => {
             return response
         })

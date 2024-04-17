@@ -53,7 +53,6 @@
             <button type="submit" class="btn btn-primary" style="text-align: center">
               {{ challenge.friend_id ? 'Freund herausfordern' : 'Challenge-Link erstellen' }}
             </button>
-            <button id="invisibleOpenModalButton" style="visibility: hidden;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
             <div v-if="errorMessage != ''" class="mt-2 text-danger">{{errorMessage}}</div>
             <div v-if="successMessage != ''" class="mt-2 text-success">{{successMessage}}</div>
             <div v-if="challenge.chatgpt_check">
@@ -64,23 +63,7 @@
         </form>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Challenge Link</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- http://{{ipv4}}:3000/registrieren?challengeId={{challengeId}} -->
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="copyTextToClipboard()">Kopieren</button>
-      </div>
-    </div>
-  </div>
-</div>
+<LinkModal ref="linkModal"/>
 <div id="paypal-button-container"></div>
 </main>
 </template>
@@ -90,14 +73,16 @@ import { ref } from 'vue'
 import challengeService from "../services/challenge.service.js";
 import friendshipService from "../services/friendship.service.js";
 import { useStore } from '../stores/store'
+import router from '../router/index.js';
 import CheckoutPayment from '../components/CheckoutPayment.vue'
 import CheckoutItem from '../components/CheckoutItem.vue'
-const ipv4 = import.meta.env.VITE_IPV4 || 'localhost';
+import LinkModal from '@/components/LinkModal.vue';
 const errorMessage = ref('')
 const successMessage = ref('')
 const needsValidation = ref(false)
 const challengeId = ref('')
 const store = useStore()
+const linkModal = ref(null);
 console.log(`User Create Challenge: ${store.user.uid}`);
 const challenge = ref({
     user_id: store.user.uid,
@@ -112,6 +97,7 @@ const challenge = ref({
   });
 
 const friends = ref('')
+
 
 const createChallenge = async () => {
   try {
@@ -129,8 +115,8 @@ const createChallenge = async () => {
     console.log(challenge.value)
     const res = await challengeService.createChallenge(challenge.value)
     if (res.status == 200) {
-      if (!challenge.value.friend_id) document.getElementById('invisibleOpenModalButton').click();
       challengeId.value = res.data
+      if (!challenge.value.friend_id) linkModal.value.showLinkModal(challengeId.value);
       needsValidation.value = false
       errorMessage.value = ''
       successMessage.value = "Challenge wurde erfolgreich erstellt."
@@ -144,16 +130,16 @@ const createChallenge = async () => {
         chatgpt_check: false,
         email_check: false,
       };
-      
     }
+    router.push({name: 'home'});
   } catch (error) { 
     successMessage.value = ''
     errorMessage.value = ''
     if (error.response && error.response.status === 406) {
-      errorMessage.value= error.response.data.detail
+      errorMessage.value= error.response
     } else {
-        errorMessage.value= error.response.data.detail
-        // errorMessage.value="Challenge erstellen hat nicht funktioniert. Bitte versuche es später erneut."
+      errorMessage.value= error.response
+      // errorMessage.value="Challenge erstellen hat nicht funktioniert. Bitte versuche es später erneut."
     }
   }
 }
@@ -171,13 +157,6 @@ const getFriends = async () => {
         alert("Error running rest-call:", error.message);
     }
   }
-}
-
-const copyTextToClipboard = () => {
-  navigator.clipboard.writeText(`http://${ipv4}:3000/registrieren?challengeId=${challengeId.value}`).then(function() {
-  }).catch(err => {
-    console.error('Error in copying link: ', err);
-  });
 }
 
 getFriends()

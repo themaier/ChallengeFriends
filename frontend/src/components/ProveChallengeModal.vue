@@ -26,7 +26,7 @@ import  {Modal} from 'bootstrap'
 import challengeService from '../services/challenge.service.js'
 let { challenges} = defineProps(['challenges']);
 const file = ref(null)
-    const modalRef = ref(null);
+const modalRef = ref(null);
 const emit = defineEmits('uploadedSucessfully')
 
 const onFileChanged = (e) => {

@@ -6,7 +6,7 @@
         <div class="container-fluid">
           <RouterLink class="navbar-brand" to="#">Challenge accepted</RouterLink>
           <button class="navbar-toggler" @click="isCollapsed = !isCollapsed"><span class="navbar-toggler-icon"></span></button>
-          <div class="navbar-collapse" :class="{'collapse': isCollapsed}" ref="navbarCollapse">
+          <div class="navbar-collapse" :class="{'collapse': isCollapsed}">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <RouterLink class="nav-link" @click="isCollapsed = !isCollapsed" aria-current="page" :to="{ name: 'home' }">Meine Challenges</RouterLink>

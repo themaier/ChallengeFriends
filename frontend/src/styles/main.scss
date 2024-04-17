@@ -4,3 +4,11 @@
 @import 'modules/icon.scss';
 @import 'modules/icons.scss';
 @import 'modules/animation.scss';
+
+body {
+    background-image: url('../../public/background/green-background.jpg');
+    background-size: cover; /* Cover the entire page */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-attachment: fixed; /* Optional: Makes the background fixed during scroll */
+}

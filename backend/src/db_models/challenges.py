@@ -17,7 +17,7 @@ class ChallengeStatus(Enum):
 class ChallengeTable(SQLModel, table=True):
     __tablename__ = "challenges"
 
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: Optional[str] = Field(default=None, primary_key=True)
     sender_user_id: str
     receiver_user_id: Optional[str] = None
     title: str

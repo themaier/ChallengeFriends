@@ -14,6 +14,7 @@ from src.chatgpt.api_call import check_user_challenge_for_legal
 import uuid
 from src.email.send_email import send_email_background
 from src.api_models.email import ChallengeEmail
+from shortuuid import ShortUUID
 
 router = APIRouter(tags=["Challenges"])
 
@@ -25,7 +26,7 @@ async def create_challenge(
     challenge: ChallengeForm,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-) -> int:
+) -> str:
     challenges_per_user = db.exec(
         select(ChallengeTable).where(
             ChallengeTable.receiver_user_id == challenge.friend_id
@@ -83,6 +84,7 @@ async def create_challenge(
                 list_hashtags.append(hashtag_entry)
 
     challenge_entry = ChallengeTable(
+        id=ShortUUID().random(length=10),
         sender_user_id=challenge.user_id,
         receiver_user_id=challenge.friend_id,
         title=challenge.challenge_name,
@@ -133,7 +135,7 @@ def map_challenge_list(
                 id=comment.id,
                 user_id=comment.user_id,
                 challenge_id=comment.challenge_id,
-                username=username,
+                username="username",
                 text=comment.text,
                 image_path=comment.image_path,
             )
@@ -154,15 +156,15 @@ def map_challenge_list(
         if has_liked == None:
             has_liked = False
         likes = LikeChallengeResponse(likes_count=likes_count, has_liked=has_liked)
-        receiver_name = (
-            db.exec(select(UserTable).where(UserTable.id == challenge.receiver_user_id))
-            .first()
-            .username
-        )
+        # receiver_name = (
+        #     db.exec(select(UserTable).where(UserTable.id == challenge.receiver_user_id))
+        #     .first()
+        #     .username
+        # )
         challenge_obj = Challenge(
             id=challenge.id,
-            publisher_name=user.username,
-            receiver_name=receiver_name,
+            publisher_name="user.username",
+            receiver_name="receiver_name",
             receiver_id=challenge.receiver_user_id,
             title=challenge.title,
             description=challenge.description,
@@ -243,15 +245,15 @@ async def get_created_challenges(
     print("\n-\n-\n-\n-\n-\n")
     created_challenges = []
     for challenge_entry in challenge_entries:
-        receiver_user = db.exec(
-            select(UserTable).where(UserTable.id == challenge_entry.receiver_user_id)
-        ).first()
-        if receiver_user:
-            receiver_user_name = receiver_user.username
-            receiver_user_id = receiver_user.id
-        else:
+        # receiver_user = db.exec(
+        #     select(UserTable).where(UserTable.id == challenge_entry.receiver_user_id)
+        # ).first()
+        if challenge_entry.status == ChallengeStatus.ASLINK:
             receiver_user_name = None
             receiver_user_id = None
+        else:
+            # receiver_user_name = receiver_user.username
+            receiver_user_id = challenge_entry.receiver_user_id
 
         created_challenges.append(
             CreatedChallenges(
@@ -268,9 +270,29 @@ async def get_created_challenges(
     return created_challenges
 
 
+@router.put("/challenges/{challenge_id}/link", status_code=200)
+async def add_unlinked_challenge(
+    challenge_id: str,
+    receiver_user_id: str,
+    db: Session = Depends(get_db),
+):
+    unlinked_challenge = db.exec(
+        select(ChallengeTable).where(
+            (ChallengeTable.id == challenge_id)
+            & (ChallengeTable.status == ChallengeStatus.ASLINK)
+            & (ChallengeTable.sender_user_id != receiver_user_id)
+        )
+    ).first()
+    if unlinked_challenge:
+        unlinked_challenge.status = ChallengeStatus.PENDING
+        unlinked_challenge.receiver_user_id = receiver_user_id
+        db.add(unlinked_challenge)
+        db.commit()
+
+
 @router.put("/challenges/{challenge_id}/comment")
 async def accept_challenge(
-    challenge_id: int,
+    challenge_id: str,
     image: UploadFile = File(None),
     user_id: str = Form(...),
     comment_text: str = Form(None),
@@ -302,7 +324,7 @@ async def accept_challenge(
 
 
 @router.put("/challenges/{challenge_id}/accept")
-async def accept_challenge(challenge_id: int, db: Session = Depends(get_db)):
+async def accept_challenge(challenge_id: str, db: Session = Depends(get_db)):
     challenge = db.exec(
         select(ChallengeTable).where(ChallengeTable.id == challenge_id)
     ).first()
@@ -319,7 +341,7 @@ async def complete_challenge_image():
 
 @router.put("/challenges/{challenge_id}/done")
 async def complete_challenge(
-    challenge_id: int, image: UploadFile, db: Session = Depends(get_db)
+    challenge_id: str, image: UploadFile, db: Session = Depends(get_db)
 ):
     challenge = db.exec(
         select(ChallengeTable).where(ChallengeTable.id == challenge_id)
@@ -348,7 +370,7 @@ async def complete_challenge(
 
 
 @router.put("/challenges/{challenge_id}/decline")
-async def decline_challenge(challenge_id: int, db: Session = Depends(get_db)):
+async def decline_challenge(challenge_id: str, db: Session = Depends(get_db)):
     challenge = db.exec(
         select(ChallengeTable).where(ChallengeTable.id == challenge_id)
     ).first()
@@ -412,7 +434,7 @@ async def toggle_challenge_like(
 
 
 @router.get("/challenges/{challenge_id}/like")
-async def get_likes(challenge_id: int, db: Session = Depends(get_db)) -> int:
+async def get_likes(challenge_id: str, db: Session = Depends(get_db)) -> int:
     liked_entries = db.exec(
         select(LikesTable).where(
             LikesTable.challenge_id == challenge_id, LikesTable.state == True

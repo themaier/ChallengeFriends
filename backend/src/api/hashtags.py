@@ -8,13 +8,12 @@ from sqlmodel import Session, select
 
 router = APIRouter(tags=["Hashtags"])
 
+
 @router.post("/hashtags")
 async def add_hashtag(
-        challengeId: int,
-        hashtags: List[str],
-        db: Session = Depends(get_db)
-    ):
-    
+    challengeId: str, hashtags: List[str], db: Session = Depends(get_db)
+):
+
     for hashtag in hashtags:
         hashtagTable = HashtagTable()
         hashtagTable.challenge_id = challengeId
@@ -26,10 +25,6 @@ async def add_hashtag(
 
 
 @router.get("/hashtags")
-async def get_hashtags(
-        db: Session = Depends(get_db)
-    ) -> List[HashtagTable]:
-    
-    return db.exec(select(HashtagTable)).all()
+async def get_hashtags(db: Session = Depends(get_db)) -> List[HashtagTable]:
 
-    
+    return db.exec(select(HashtagTable)).all()

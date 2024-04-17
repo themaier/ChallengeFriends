@@ -6,4 +6,4 @@ class UserVerify(BaseModel):
     username: str
     password: str
     email: Optional[str] = None
-    challengeId: Optional[int] = None
+    challengeId: Optional[str] = None
