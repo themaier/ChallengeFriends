@@ -166,7 +166,7 @@ const getCreatedChallenges = async () => {
   try {
     const res = await challengeService.getCreatedChallenges(store.user.uid)
     if (res.status == 200) {
-      createdChallenges.value = res.data
+      createdChallenges.value = [...res.data].reverse();
       console.log("Created Challenges")
       console.log(createdChallenges.value)
     }
