@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-column align-items-center">
-    <button class="btn btn-primary button-arrow" @click="isCollapsed = !isCollapsed" style="border-radius: 20px; background: linear-gradient(to right, #6a11cb, #2575fc); padding: 0.75rem 2rem;">
+  <div class="d-flex flex-column align-items-center mb-5">
+    <button class="btn btn-primary" @click="isCollapsed = !isCollapsed" style="border-radius: 20px; background: linear-gradient(to right, #6a11cb, #2575fc); padding: 0.75rem 2rem;">
       Challenge erstellen <i :class="isFormVisible ? 'bi bi-chevron-up' : 'bi bi-chevron-down' " class="ms-2"></i>
     </button>
 
@@ -32,7 +32,7 @@
               <option v-for="friend in friends" :key="friend.id" :value="friend.id">{{ friend.name }}</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-success w-100">
+          <button type="submit" class="btn btn-primary w-100">
             {{ challengeForm.friendId ? 'Freund herausfordern' : 'Challenge-Link erstellen' }}
           </button>
           <div v-if="errorMessage != ''" class="mt-2 text-danger">{{errorMessage}}</div>
