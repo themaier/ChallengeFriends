@@ -7,19 +7,30 @@
     <div class="container-md">
       <h1 class="my-4">Meine Challenges</h1>
     </div>
-    <div class="container-md bg-body-secondary py-3 rounded">
+    <div class="container-md bg-body-secondary py-3 rounded mt-4">
       <h2 class="mb-4">Ausstehende Challenges</h2>
       <div v-if="!pendingChallenges[0]">Keine ausstehenden Challenges zurzeit!</div>
       <div v-if="pendingChallenges[0]" class="container-md bg-body-tertiary rounded py-2">
         <ul class="px-0 my-0">
-          <li class="row align-items-center py-3 gy-2 gy-lg-0" v-for="pendingChallenge in pendingChallenges" :key="pendingChallenge.id">
-            <div class="col-lg-2">{{pendingChallenge.title}}</div>
-            <div class="col-lg">{{pendingChallenge.description}}</div>
-            <div v-if="pendingChallenge.reward" class="col-lg-2">Reward: {{pendingChallenge.reward}}</div>
-            <div v-if="pendingChallenge.hashtags[0]" class="col-lg-2"><RouterLink :to="{ name: 'trending', query: { hashtag: hashtag.text } }" v-for="hashtag in pendingChallenge.hashtags" :href="'?hashtag='+ hashtag.text" :key="hashtag.id" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">#{{hashtag.text}}</RouterLink></div>
-            <div class="col-3 align-self-end d-flex  justify-content-lg-end d-flex-column">
-              <button class="btn btn-success btn-block" @click="acceptChallenge(pendingChallenge.id)">Annehmen</button>
-              <button class="btn btn-danger btn-block offset-1" @click="declineChallenge(pendingChallenge.id)">Ablehnen</button>
+          <li class="d-flex flex-wrap align-items-center py-3" v-for="pendingChallenge in pendingChallenges" :key="pendingChallenge.id">
+            <div class="flex-grow-1 pe-3">
+              <div class="fw-bold">{{pendingChallenge.title}}</div>
+              <div>{{pendingChallenge.description}}</div>
+            </div>
+            <!-- <div v-if="pendingChallenge.reward" class="d-none d-md-block me-auto pe-3">
+              Reward: {{ pendingChallenge.reward }}
+            </div> -->
+            <div v-if="pendingChallenge.hashtags[0]" class="col-lg-2">
+              <RouterLink :to="{ name: 'trending', query: { hashtag: hashtag.text } }"
+                v-for="hashtag in pendingChallenge.hashtags" :href="'?hashtag='+ hashtag.text" :key="hashtag.id"
+                class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                #{{hashtag.text}}
+              </RouterLink></div>
+            <div class="ms-auto">
+              <button class="btn btn-success btn-block me-1" @click="acceptChallenge(pendingChallenge.id)">Annehmen</button>
+            </div>
+            <div class="ms-auto">
+              <button class="btn btn-danger btn-block" @click="declineChallenge(pendingChallenge.id)">Ablehnen</button>
             </div>
           </li>
         </ul>
@@ -31,12 +42,16 @@
       <div v-if="!acceptedChallenges[0]">Keine aktiven Challenges zurzeit!</div>
       <div v-if="acceptedChallenges[0]" class="container-md bg-body-tertiary rounded py-2">
         <ul class="px-0 my-0">
-          <li  class="row align-items-center py-3 gy-2 gy-lg-0" v-for="acceptedChallenge in acceptedChallenges" :key="acceptedChallenge.id">
-            <div class="col-lg-2">{{acceptedChallenge.title}}</div>
-            <div class="col-lg">{{acceptedChallenge.description}}</div>
-            <div v-if="acceptedChallenge.reward" class="col-lg-2">Reward: {{acceptedChallenge.reward}}</div>
+          <li class="d-flex flex-wrap align-items-center py-3" v-for="acceptedChallenge in acceptedChallenges" :key="acceptedChallenge.id">
+            <div class="flex-grow-1 pe-3">
+              <div class="fw-bold">{{acceptedChallenge.title}}</div>
+              <div>{{acceptedChallenge.description}}</div>
+            </div>
+            <div v-if="acceptedChallenge.reward" class="d-none d-md-block me-auto pe-3">
+              Reward: {{ acceptedChallenge.reward }}
+            </div>
             <div v-if="acceptedChallenge.hashtags[0]" class="col-lg-2"><RouterLink :to="{ name: 'trending', query: { hashtag: hashtag.text } }" v-for="hashtag in acceptedChallenge.hashtags" :href="'?hashtag='+ hashtag.text" :key="hashtag.id" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">#{{hashtag.text}}</RouterLink></div>
-            <div class="col-3 align-self-end d-flex  justify-content-lg-end d-flex-column">
+            <div class="ms-auto">
               <button class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="'#proveModal'+acceptedChallenge.id">Abschließen</button>
             </div>
           </li>
@@ -45,7 +60,7 @@
     </div>
 
     <div class="container-md">
-      <h1 class="my-4">Andere Challenges</h1>
+      <h1 class="my-4">Gesendete Challenges</h1>
     </div>
     <div class="container-md bg-body-secondary py-3 rounded mt-4">
       <h2 class="mb-4">Freunde</h2>
