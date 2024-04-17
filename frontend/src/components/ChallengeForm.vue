@@ -104,7 +104,7 @@ const createChallenge = async () => {
       overlay: false,
     };
   }
-  isCollapsed.value = false;
+  isCollapsed.value = true;
 };
 
 
